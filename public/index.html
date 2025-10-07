@@ -11,7 +11,7 @@
 <body>
     <!-- AR preview container -->
     <div style="width: 640px; height: 360px" id="deepar-div"></div>
-    <!-- Camera switch button -->
+    <!-- Camera switch button (placeholder until supported) -->
     <button onclick="switchCamera()">Switch Camera</button>
 
     <!-- DeepAR initialization and effect switch -->
@@ -35,6 +35,10 @@
                 });
                 console.log("✅ DeepAR initialized with back camera and effect loaded.");
 
+                // Disable face tracking (since we’re using foot tracking)
+                deepAR.setFaceTrackingEnabled(false);
+                console.log("✅ Face tracking disabled.");
+
                 // Switch to your custom effect
                 await deepAR.switchEffect('./effects/filters/basketball_black.deepar');
                 console.log('✅ Custom effect loaded successfully!');
@@ -48,14 +52,12 @@
             }
         })();
 
-        // Camera switch function
-        async function switchCamera() {
-            try {
-                if (!deepAR) throw new Error('DeepAR not initialized yet');
-                await deepAR.switchCamera('environment'); // Or 'user' for front
-                console.log('✅ Camera switched!');
-            } catch (err) {
-                console.error('❌ Camera switch failed:', err);
+        // Camera switch function (placeholder until supported)
+        function switchCamera() {
+            console.warn('⚠️ Camera switching not supported in this SDK version. Reload page to change camera mode.');
+            // Optionally, prompt to reload with different facingMode (e.g., 'user')
+            if (confirm('Switch to front camera? Reload page to apply.')) {
+                window.location.reload(); // User can manually adjust facingMode in code and reload
             }
         }
     </script>
