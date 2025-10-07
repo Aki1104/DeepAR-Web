@@ -32,10 +32,6 @@
                 });
                 console.log("✅ DeepAR initialized with back camera.");
 
-                // Explicitly initialize foot tracking (v5.6.3 supports this)
-                await deepAR.initFootTracking();
-                console.log("✅ Foot tracking initialized.");
-
                 await deepAR.switchEffect('./effects/filters/basketball_black.deepar');
                 console.log('✅ Custom shoe effect loaded successfully!');
 
