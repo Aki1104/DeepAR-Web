@@ -16,10 +16,13 @@
 
     <!-- DeepAR initialization and effect switch -->
     <script>
+        // Declare deepAR in global scope
+        let deepAR;
+
         (async function () {
             try {
                 // Initialize DeepAR with back camera
-                const deepAR = await deepar.initialize({
+                deepAR = await deepar.initialize({
                     licenseKey: '247704b47c32f030b2b526dde74bc7220426d3f3f390f51ed573bf0da398e590bc8f12a8923a7da4',
                     previewElement: document.querySelector('#deepar-div'),
                     effect: 'https://cdn.jsdelivr.net/npm/deepar/effects/aviators' // Start with a default effect
@@ -48,6 +51,7 @@
         // Camera switch function
         async function switchCamera() {
             try {
+                if (!deepAR) throw new Error('DeepAR not initialized yet');
                 await deepAR.switchCamera('environment'); // Or 'user' for front
                 console.log('✅ Camera switched!');
             } catch (err) {
