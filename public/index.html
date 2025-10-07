@@ -5,45 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AR Canvas</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet" />
-    <!-- DeepAR browser SDK v5.6.20 -->
-    <script src="https://cdn.jsdelivr.net/npm/deepar/js/deepar.js"></script>
+    <!-- DeepAR browser SDK v5.6.3 (pre-deprecation for foot tracking) -->
+    <script src="https://cdn.jsdelivr.net/npm/deepar@5.6.3/js/deepar.js"></script>
 </head>
 <body>
-    <!-- AR preview container (reduced size to help with WebGL perf) -->
+    <!-- AR preview container -->
     <div style="width: 480px; height: 270px" id="deepar-div"></div>
-    <!-- Camera switch button (manual workaround) -->
+    <!-- Camera switch button -->
     <button onclick="switchCamera()">Switch Camera</button>
 
     <!-- DeepAR initialization and effect switch -->
     <script>
-        // Declare deepAR in global scope
         let deepAR;
 
         (async function () {
             try {
-                // Initialize DeepAR with back camera (no starter effect to avoid face tracking)
                 deepAR = await deepar.initialize({
                     licenseKey: '247704b47c32f030b2b526dde74bc7220426d3f3f390f51ed573bf0da398e590bc8f12a8923a7da4',
                     previewElement: document.querySelector('#deepar-div'),
-                    // effect: 'https://cdn.jsdelivr.net/npm/deepar/effects/aviators' // Commented out to skip face effect
                 }, {
                     additionalOptions: {
                         cameraConfig: {
-                            facingMode: 'environment' // Use back (environment) camera
+                            facingMode: 'environment' // Back camera for feet
                         }
                     }
                 });
                 console.log("✅ DeepAR initialized with back camera.");
 
-                // Reduce face detection sensitivity to minimize overhead
-                // deepAR.changeFaceDetectionSensitivity(0);
-                // console.log("✅ Face detection sensitivity reduced.");
+                // Explicitly initialize foot tracking (v5.6.3 supports this)
+                await deepAR.initFootTracking();
+                console.log("✅ Foot tracking initialized.");
 
-                // Switch to your custom shoe effect
                 await deepAR.switchEffect('./effects/filters/basketball_black.deepar');
                 console.log('✅ Custom shoe effect loaded successfully!');
 
-                // Add foot visibility callback (fires if effect has foot tracking)
                 deepAR.callbacks.onFeetVisibilityChanged = (visible) => {
                     console.log(visible ? '👟 Feet detected!' : 'No feet visible.');
                 };
@@ -52,9 +47,8 @@
             }
         })();
 
-        // Camera switch function (manual for v5.6.20)
         function switchCamera() {
-            alert('Dynamic switching not supported in v5.6.20.\nTo switch:\n1. Edit code: Change facingMode to "user" (front) or "environment" (back).\n2. Save and reload page.');
+            alert('Dynamic switching not supported in v5.6.3.\nTo switch:\n1. Edit facingMode to "user" (front).\n2. Reload page.');
         }
     </script>
 </body>
