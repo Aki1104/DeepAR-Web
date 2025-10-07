@@ -1,47 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AR Canvas</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
-  <!-- DeepAR browser SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/deepar/js/deepar.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AR Canvas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet" />
+    <!-- DeepAR browser SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/deepar/js/deepar.js"></script>
 </head>
-
 <body>
+    <!-- AR preview container -->
+    <div style="width: 640px; height: 360px" id="deepar-div"></div>
 
-  <!-- AR preview container -->
-  <div style="width: 640px; height: 360px" id="deepar-div"></div>
+    <!-- DeepAR initialization and effect switch -->
+    <script>
+        (async function () {
+            try {
+                // Initialize DeepAR
+                const deepAR = await deepar.initialize({
+                    licenseKey: '247704b47c32f030b2b526dde74bc7220426d3f3f390f51ed573bf0da398e590bc8f12a8923a7da4',
+                    previewElement: document.querySelector('#deepar-div'),
+                    effect: 'https://cdn.jsdelivr.net/npm/deepar/effects/aviators' // Start with a default effect
+                });
+                console.log("✅ DeepAR initialized and effect loaded.");
 
-  <!-- DeepAR initialization -->
-  <script>
-    (async function () {
-      try {
-        const deepAR = await deepar.initialize({
-          licenseKey: '247704b47c32f030b2b526dde74bc7220426d3f3f390f51ed573bf0da398e590bc8f12a8923a7da4',
-          previewElement: document.querySelector('#deepar-div'),
-          // effect: 'https://classicblue.vercel.app/ClassicBlue.deepar',
-          effect: 'https://cdn.jsdelivr.net/npm/deepar/effects/aviators'
-          // eto back cam
-          // ,
-          // additionalOptions: {
-          //   cameraConfig: {
-          //     facingMode: 'environment'
-          //   }
-          // }
-        });
-
-        console.log("✅ DeepAR initialized and effect loaded.");
-      } catch (err) {
-        console.error("❌ DeepAR initialization failed:", err);
-      }
-    })();
-    await deepAR.switchEffect('./effects/filters/basketball_black.deepar');
-  // </script>
-
+                // Switch to your custom effect
+                await deepAR.switchEffect('/effects/my-custom-filter.deepar');
+                console.log('✅ Custom effect loaded successfully!');
+            } catch (err) {
+                console.error("❌ Error:", err);
+            }
+        })();
+    </script>
 </body>
-
 </html>
