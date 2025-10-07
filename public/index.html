@@ -11,8 +11,13 @@
 <body>
     <!-- AR preview container -->
     <div style="width: 480px; height: 270px" id="deepar-div"></div>
-    <!-- Camera switch button -->
-    <button onclick="switchCamera()">Switch Camera</button>
+    <!-- Filter selection buttons -->
+    <div>
+        <button onclick="switchEffect('./effects/filters/basketball_black.deepar')">Black Shoes</button>
+        <button onclick="switchEffect('./effects/filters/basketball_blue.deepar')">Blue Shoes</button>
+        <button onclick="switchEffect('./effects/filters/basketball_red.deepar')">Red Shoes</button>
+        <button onclick="switchEffect('./effects/filters/basketball_white.deepar')">White Shoes</button>
+    </div>
 
     <!-- DeepAR initialization and effect switch -->
     <script>
@@ -26,14 +31,16 @@
                 }, {
                     additionalOptions: {
                         cameraConfig: {
-                            facingMode: 'environment' // Back camera for feet
+                            facingMode: 'environment', // Back camera
+                            mirrorCamera: false // Disable mirroring for back camera
                         }
                     }
                 });
                 console.log("✅ DeepAR initialized with back camera.");
 
+                // Load initial effect (e.g., black shoes)
                 await deepAR.switchEffect('./effects/filters/basketball_black.deepar');
-                console.log('✅ Custom shoe effect loaded successfully!');
+                console.log('✅ Initial shoe effect loaded successfully!');
 
                 deepAR.callbacks.onFeetVisibilityChanged = (visible) => {
                     console.log(visible ? '👟 Feet detected!' : 'No feet visible.');
@@ -43,8 +50,15 @@
             }
         })();
 
-        function switchCamera() {
-            alert('Dynamic switching not supported in v5.6.3.\nTo switch:\n1. Edit facingMode to "user" (front).\n2. Reload page.');
+        // Function to switch effects
+        async function switchEffect(effectPath) {
+            try {
+                if (!deepAR) throw new Error('DeepAR not initialized');
+                await deepAR.switchEffect(effectPath);
+                console.log(`✅ Switched to effect: ${effectPath}`);
+            } catch (err) {
+                console.error("❌ Failed to switch effect:", err);
+            }
         }
     </script>
 </body>
