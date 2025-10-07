@@ -11,26 +11,49 @@
 <body>
     <!-- AR preview container -->
     <div style="width: 640px; height: 360px" id="deepar-div"></div>
+    <!-- Camera switch button -->
+    <button onclick="switchCamera()">Switch Camera</button>
 
     <!-- DeepAR initialization and effect switch -->
     <script>
         (async function () {
             try {
-                // Initialize DeepAR
+                // Initialize DeepAR with back camera
                 const deepAR = await deepar.initialize({
                     licenseKey: '247704b47c32f030b2b526dde74bc7220426d3f3f390f51ed573bf0da398e590bc8f12a8923a7da4',
                     previewElement: document.querySelector('#deepar-div'),
                     effect: 'https://cdn.jsdelivr.net/npm/deepar/effects/aviators' // Start with a default effect
+                }, {
+                    additionalOptions: {
+                        cameraConfig: {
+                            facingMode: 'environment' // Use back (environment) camera
+                        }
+                    }
                 });
-                console.log("✅ DeepAR initialized and effect loaded.");
+                console.log("✅ DeepAR initialized with back camera and effect loaded.");
 
                 // Switch to your custom effect
-                await deepAR.switchEffect('/effects/filters/basketball_black.deepar');
+                await deepAR.switchEffect('./effects/filters/basketball_black.deepar');
                 console.log('✅ Custom effect loaded successfully!');
+
+                // Add foot visibility callback
+                deepAR.callbacks.onFeetVisibilityChanged = (visible) => {
+                    console.log(visible ? '👟 Feet detected!' : 'No feet visible.');
+                };
             } catch (err) {
                 console.error("❌ Error:", err);
             }
         })();
+
+        // Camera switch function
+        async function switchCamera() {
+            try {
+                await deepAR.switchCamera('environment'); // Or 'user' for front
+                console.log('✅ Camera switched!');
+            } catch (err) {
+                console.error('❌ Camera switch failed:', err);
+            }
+        }
     </script>
 </body>
 </html>
