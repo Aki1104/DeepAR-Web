@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AR Canvas</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+  <!-- DeepAR browser SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/deepar/js/deepar.js"></script>
+</head>
+
+<body>
+
+  <!-- AR preview container -->
+  <div style="width: 640px; height: 360px" id="deepar-div"></div>
+
+  <!-- DeepAR initialization -->
+  <script>
+    (async function () {
+      try {
+        const deepAR = await deepar.initialize({
+          licenseKey: '0e55f0acdca03121607855d356d7920d17b75c6d32ab8fb9a46bbaf6c89da843a8c0f4f7a5b73693',
+          previewElement: document.querySelector('#deepar-div'),
+          // effect: 'https://classicblue.vercel.app/ClassicBlue.deepar',
+          effect: 'https://cdn.jsdelivr.net/npm/deepar/effects/aviators'
+          // eto back cam
+          // ,
+          // additionalOptions: {
+          //   cameraConfig: {
+          //     facingMode: 'environment'
+          //   }
+          // }
+        });
+
+        console.log("✅ DeepAR initialized and effect loaded.");
+      } catch (err) {
+        console.error("❌ DeepAR initialization failed:", err);
+      }
+    })();
+    await deepAR.switchEffect('./effects/filters/basketball_black.deepar');
+  </script>
+
+</body>
+
+</html>
